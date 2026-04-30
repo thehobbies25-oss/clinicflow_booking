@@ -1,0 +1,2 @@
+# This project is a static frontend application.
+# No Python dependencies are required.

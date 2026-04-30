@@ -1,0 +1,32 @@
+{
+  "name": "clinicflow-booking",
+  "version": "1.0.0",
+  "description": "ClinicFlow Booking Suite is a premium healthcare operations app with appointment scheduling, patient tracking, invoice management, and SQLite-backed persistence.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "clinic",
+    "booking",
+    "healthcare",
+    "dashboard",
+    "sqlite",
+    "express"
+  ],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "better-sqlite3": "^12.9.0",
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.4.0",
+    "express-validator": "^7.3.2",
+    "helmet": "^8.1.0",
+    "morgan": "^1.10.1",
+    "winston": "^3.19.0"
+  }
+}

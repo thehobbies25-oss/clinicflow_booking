@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClinicFlow - Healthcare Booking & Messaging System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <!-- Auth Modal -->
+    <div id="authModal" class="modal active">
+        <div class="auth-container">
+            <div class="auth-tabs">
+                <button class="auth-tab active" data-tab="login">Login</button>
+                <button class="auth-tab" data-tab="register">Sign Up</button>
+            </div>
+
+            <form id="loginForm" class="auth-form active">
+                <h2>Welcome to ClinicFlow</h2>
+                <p>Demo: admin@clinic.com / password</p>
+                <input type="email" placeholder="Email" value="admin@clinic.com" required>
+                <input type="password" placeholder="Password" value="password" required>
+                <button type="submit" class="btn-primary">Login</button>
+            </form>
+
+            <form id="registerForm" class="auth-form">
+                <h2>Create Account</h2>
+                <input type="text" placeholder="Full Name" required>
+                <input type="email" placeholder="Email" required>
+                <input type="tel" placeholder="Phone" required>
+                <input type="password" placeholder="Password (min 6)" required>
+                <select required>
+                    <option value="">Select Role</option>
+                    <option value="patient">Patient</option>
+                    <option value="doctor">Doctor</option>
+                </select>
+                <button type="submit" class="btn-primary">Sign Up</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <div id="mainApp" class="app-shell" style="display:none;">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h1>ClinicFlow</h1>
+                <p id="userNameDisplay"></p>
+                <p id="userRoleDisplay" style="font-size: 12px; opacity: 0.8;"></p>
+            </div>
+
+            <nav class="sidebar-nav">
+                <button class="nav-link active" data-panel="dashboard">📊 Dashboard</button>
+                <button class="nav-link" data-panel="appointments">📅 Appointments</button>
+                <button class="nav-link" data-panel="messages">💬 Messages <span id="msgBadge" class="badge"
+                        style="display:none;">0</span></button>
+                <button class="nav-link" data-panel="billing">💰 Invoices</button>
+                <button class="nav-link admin-only" data-panel="admin" style="display:none;">⚙️ Admin</button>
+            </nav>
+
+            <button class="btn-logout">Logout</button>
+        </aside>
+
+        <main class="main-content">
+            <!-- Dashboard -->
+            <section id="dashboardPanel" class="panel active">
+                <h2>Dashboard</h2>
+                <div class="dashboard-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">📅</div>
+                        <div>
+                            <p class="stat-label">Upcoming</p>
+                            <p class="stat-value" id="upcomingCount">0</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">💬</div>
+                        <div>
+                            <p class="stat-label">Messages</p>
+                            <p class="stat-value" id="unreadMessages">0</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">💰</div>
+                        <div>
+                            <p class="stat-label">Pending Payment</p>
+                            <p class="stat-value" id="pendingPayment">PKR 0</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="section">
+                    <h3>Next Appointments</h3>
+                    <div id="dashboardAppointments" class="appointments-list"></div>
+                </div>
+            </section>
+
+            <!-- Appointments -->
+            <section id="appointmentsPanel" class="panel">
+                <h2>Appointments</h2>
+                <button class="btn-primary new-appt-btn">+ New Appointment</button>
+                <form id="appointmentForm" class="appt-form" style="display:none;">
+                    <h3>Schedule Appointment</h3>
+                    <input type="text" id="doctorSearch" placeholder="Search doctor..." required>
+                    <div id="doctorList" class="doctor-list"></div>
+                    <input type="date" id="visitDate" required>
+                    <input type="time" id="visitTime" required>
+                    <select id="department" required>
+                        <option>Cardiology</option>
+                        <option>Dental Care</option>
+                        <option>Dermatology</option>
+                        <option>General Practice</option>
+                    </select>
+                    <select id="visitType" required>
+                        <option>Consultation</option>
+                        <option>Follow-up</option>
+                        <option>Procedure</option>
+                        <option>Checkup</option>
+                    </select>
+                    <textarea id="appointmentNotes" placeholder="Notes..."></textarea>
+                    <div class="form-actions">
+                        <button type="submit" class="btn-primary">Schedule</button>
+                        <button type="button" class="btn-secondary cancel-appt">Cancel</button>
+                    </div>
+                </form>
+                <div id="appointmentsList" class="appointments-list"></div>
+            </section>
+
+            <!-- Messages -->
+            <section id="messagesPanel" class="panel">
+                <h2>Messages</h2>
+                <div class="messages-layout">
+                    <div class="contacts-sidebar">
+                        <input type="text" id="contactSearch" placeholder="Search contacts...">
+                        <div id="conversationsList" class="contacts-list"></div>
+                    </div>
+                    <div class="message-thread">
+                        <div id="messageThreadHeader" class="message-header">Select a conversation</div>
+                        <div id="messagesList" class="messages-list"></div>
+                        <form id="messageForm" class="message-input" style="display:none;">
+                            <textarea id="messageInput" placeholder="Type your message..." required></textarea>
+                            <button type="submit" class="btn-primary">Send</button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Invoices -->
+            <section id="invoicesPanel" class="panel">
+                <h2>Invoices</h2>
+                <div class="invoice-filters">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="Pending">Pending</button>
+                    <button class="filter-btn" data-filter="Paid">Paid</button>
+                </div>
+                <div id="invoicesList" class="invoices-table"></div>
+            </section>
+
+            <!-- Admin -->
+            <section id="adminPanel" class="panel admin-only" style="display:none;">
+                <h2>Admin Dashboard</h2>
+                <div class="admin-grid">
+                    <div class="stat-card">
+                        <p class="stat-label">Total Appointments</p>
+                        <p class="stat-value" id="statTotalAppointments">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <p class="stat-label">Total Patients</p>
+                        <p class="stat-value" id="statTotalPatients">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <p class="stat-label">Total Doctors</p>
+                        <p class="stat-value" id="statTotalDoctors">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <p class="stat-label">Revenue</p>
+                        <p class="stat-value" id="statTotalRevenue">PKR 0</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <div id="toast" class="toast"></div>
+    <script src="app.js"></script>
+</body>
+
+</html>

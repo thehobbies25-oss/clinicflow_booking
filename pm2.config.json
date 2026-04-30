@@ -1,0 +1,21 @@
+module.exports = {
+  apps: [{
+    name: "clinicflow",
+    script: "./server.js",
+    cwd: "./",
+    instances: 1,
+    autorestart: true,
+    watch: false,
+    max_memory_restart: "500M",
+    env: {
+      NODE_ENV: "production",
+      PORT: 3000,
+      BCRYPT_SALT_ROUNDS: 12,
+      ENABLE_DEMO_RESET: "false"
+    },
+    error_file: "./logs/err.log",
+    out_file: "./logs/out.log",
+    log_date_format: "YYYY-MM-DD HH:mm:ss Z",
+    merge_logs: true
+  }]
+};
